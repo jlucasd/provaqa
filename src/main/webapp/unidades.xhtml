@@ -1,0 +1,77 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    template="/WEB-INF/templates/default.xhtml">
+    <ui:define name="content">
+
+        <h1>Unidade</h1>
+
+        <h:form id="reg">
+
+            <h2>Nova Unidade</h2>
+            <p>Digite os dados do unidade</p>
+
+            <h:panelGrid columns="3" columnClasses="titleCell">
+                <h:outputLabel value="" />
+                <h:inputHidden id="idUnidade" value="#{unidade.id}" />
+                <h:message for="" errorClass="invalid" />
+
+                <h:outputLabel for="nome" value="Nome:" />
+                <h:inputText id="nome" value="#{unidade.nome}" />
+                <h:message for="nome" errorClass="invalid" />
+
+                <p>
+                    <h:panelGrid columns="2">
+                        <h:commandButton id="register"
+                            action="#{unidadeController.salvar}"
+                            value="Salvar" styleClass="register" />
+                        <h:messages styleClass="messages"
+                            errorClass="invalid" infoClass="valid"
+                            warnClass="warning" globalOnly="true" />
+                    </h:panelGrid>
+                </p>
+            </h:panelGrid>
+        </h:form>
+
+        <h:form>
+            <h2>Unidades</h2>
+            <h:panelGroup rendered="#{empty unidades}">
+                <em>Sem unidades.</em>
+            </h:panelGroup>
+            <h:dataTable var="_unidade" value="#{unidades}"
+                rendered="#{not empty unidades}"
+                styleClass="simpletablestyle" id="listaUnidades">
+                <h:column>
+                    <f:facet name="header">Id</f:facet>
+                    #{_unidade.id}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Nome</f:facet>
+                    #{_unidade.nome}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Ações</f:facet>
+                    <h:commandLink
+                        action="#{unidadeController.carregarUnidade(_unidade)}"
+                        value="Editar">
+                        <f:ajax render="reg" />
+                    </h:commandLink>
+                    <h:outputText value=" | " />
+                    <h:commandLink
+                        action="#{unidadeController.excluir(_unidade)}"
+                        value="Remover">
+                    </h:commandLink>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Ativa</f:facet>
+                    <h:selectBooleanCheckbox value="#{_unidade.ativa}">
+                    <f:ajax event="change" listener="#{unidadeController.ativarDesativarUnidade(_unidade)}" />
+                    </h:selectBooleanCheckbox>
+                </h:column>
+            </h:dataTable>
+        </h:form>
+
+    </ui:define>
+</ui:composition>

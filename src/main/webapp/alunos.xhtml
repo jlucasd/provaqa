@@ -1,0 +1,115 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
+
+		<h1>Aluno</h1>
+
+		<h:form id="reg">
+
+			<h2>Novo Aluno</h2>
+			<p>Digite os dados do aluno</p>
+
+			<h:panelGrid columns="3" columnClasses="titleCell">
+				<h:outputLabel value="" />
+				<h:inputHidden id="idAluno" value="#{aluno.id}" />
+				<h:message for="" errorClass="invalid" />
+
+				<h:outputLabel for="nome" value="Nome:" />
+				<h:inputText id="nome" value="#{aluno.nome}" />
+				<h:message for="nome" errorClass="invalid" />
+
+				<h:outputLabel for="cpf" value="CPF:" />
+				<h:inputText id="cpf" value="#{aluno.cpf}" />
+				<h:message for="cpf" errorClass="invalid" />
+
+				<h:outputLabel for="email" value="Email:" />
+				<h:inputText id="email" value="#{aluno.email}" />
+				<h:message for="email" errorClass="invalid" />
+
+				<h:outputLabel for="nascimento" value="Nascimento:" />
+				<h:inputText id="nascimento" value="#{aluno.nascimento}" />
+				<h:message for="nascimento" errorClass="invalid" />
+
+				<h:outputLabel for="telefone" value="Telefone:" />
+				<h:inputText id="telefone" value="#{aluno.telefone}" />
+				<h:message for="telefone" errorClass="invalid" />
+
+				<p>
+					<h:panelGrid columns="2">
+						<h:commandButton id="register"
+							action="#{alunoController.salvar}" value="Salvar"
+							styleClass="register" />
+						<h:messages styleClass="messages" errorClass="invalid"
+							infoClass="valid" warnClass="warning" globalOnly="true" />
+					</h:panelGrid>
+				</p>
+			</h:panelGrid>
+		</h:form>
+
+		<h:form>
+        
+			<h2>Alunos</h2>
+            
+            <h:inputText value="#{alunoController.alunoBusca}" /> 
+            <h:commandButton action="#{alunoController.filtrarAlunos()}" value="Filtrar" />
+            
+            <br />
+            
+			<h:panelGroup rendered="#{empty alunos}">
+				<em>Sem alunos.</em>
+			</h:panelGroup>
+			<h:dataTable var="_matricula" value="#{alunos}"
+				rendered="#{not empty alunos}" styleClass="simpletablestyle"
+				id="listaMatriculas">
+				<h:column>
+					<f:facet name="header">Id</f:facet>
+                #{_matricula.id}
+                </h:column>
+				<h:column>
+					<f:facet name="header">Nome</f:facet>
+                #{_matricula.nome}
+                </h:column>
+				<h:column>
+					<f:facet name="header">Cpf</f:facet>
+                #{_matricula.cpf}
+                                
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Email</f:facet>
+                #{_matricula.email}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Nascimento</f:facet>
+                    <h:outputText value="#{_matricula.nascimento}">
+                        <f:convertDateTime type="date"
+                            pattern="dd-MM-yyyy" />
+                    </h:outputText>
+                </h:column>
+
+                <h:column>
+					<f:facet name="header">Telefone</f:facet>
+                #{_matricula.telefone}
+                
+            </h:column>
+
+				<h:column>
+					<f:facet name="header">Ações</f:facet>
+					<h:commandLink
+						action="#{alunoController.carregarPessoa(_matricula)}"
+						value="Editar">
+						<f:ajax render="reg" />
+					</h:commandLink>
+					<h:outputText value=" | " />
+					<h:commandLink action="#{alunoController.excluir(_matricula)}"
+						value="Remover">
+					</h:commandLink>
+				</h:column>
+			</h:dataTable>
+		</h:form>
+
+
+	</ui:define>
+</ui:composition>

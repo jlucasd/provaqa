@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+
+  provaqa:
+    build: .
+    image: prova-java:latest
+    ports:
+      - "5005:5005"
+      - "8080:8080"
+      - "9992:9990"
+    networks:
+      - pg_data
+      
+networks:
+  pg_data:
+    external: true
+
+

@@ -1,0 +1,104 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    template="/WEB-INF/templates/default.xhtml">
+    <ui:define name="content">
+
+        <h1>Relatórios</h1>
+
+        <h:form id="reg">
+
+            <p:growl id="msgs" showDetail="true" />
+
+            <p:tabView>
+                <p:tab title="Matriculas em andamento">
+
+                    <h:dataTable var="_matricula"
+                        value="#{matriculasEmAndamento}"
+                        rendered="#{not empty matriculasEmAndamento}"
+                        styleClass="simpletablestyle"
+                        id="listaMatriculasEmAndamento">
+                        <h:column>
+                            <f:facet name="header">Aluno</f:facet>
+		                    #{_matricula.aluno.nome}
+		                </h:column>
+                        <h:column>
+                            <f:facet name="header">Curso</f:facet>
+		                  #{_matricula.curso.nome}
+		              </h:column>
+                    </h:dataTable>
+
+                </p:tab>
+                <p:tab title="Matriculas concluidas">
+
+                    <h:dataTable var="_matricula"
+                        value="#{matriculasConcluidas}"
+                        rendered="#{not empty matriculasConcluidas}"
+                        styleClass="simpletablestyle"
+                        id="listaMatriculasConcluidas">
+                        <h:column>
+                            <f:facet name="header">Aluno</f:facet>
+                            #{_matricula.aluno.nome}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Curso</f:facet>
+                            #{_matricula.curso.nome}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Data de Confirmação</f:facet>
+                            <h:outputText value="#{_matricula.confirmacao}">
+                                <f:convertDateTime type="date" pattern="dd/MM/yyyy" />                            
+                            </h:outputText>
+                        </h:column>
+                    </h:dataTable>
+
+                </p:tab>
+                <p:tab title="Cursos em andamento">
+                    
+                    <h:dataTable var="_curso"
+                        value="#{cursosEmAndamento}"
+                        rendered="#{not empty cursosEmAndamento}"
+                        styleClass="simpletablestyle"
+                        id="listaCursosEmAndamento">
+                        <h:column>
+                            <f:facet name="header">Nome</f:facet>
+                            #{_curso.nome}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Início</f:facet>
+                            <h:outputText value="#{_curso.inicio}">
+                                <f:convertDateTime type="date" pattern="dd/MM/yyyy" />                            
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Término</f:facet>
+                            <h:outputText value="#{_curso.termino}">
+                                <f:convertDateTime type="date" pattern="dd/MM/yyyy" />                            
+                            </h:outputText>
+                        </h:column>
+                    </h:dataTable>
+                    
+                </p:tab>
+                
+                <p:tab title="Alunos não matriculados em nenhum curso">
+                    
+                    <h:dataTable var="_aluno"
+                        value="#{alunosSemCurso}"
+                        rendered="#{not empty alunosSemCurso}"
+                        styleClass="simpletablestyle"
+                        id="listaAlunosSemCurso">
+                        <h:column>
+                            <f:facet name="header">Nome</f:facet>
+                            #{_aluno.nome}
+                        </h:column>
+                    </h:dataTable>
+                    
+                </p:tab>
+                
+            </p:tabView>
+
+        </h:form>
+    </ui:define>
+</ui:composition>

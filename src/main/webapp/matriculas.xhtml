@@ -1,0 +1,106 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
+
+		<h1>Matricula</h1>
+
+		<h:form id="reg">
+
+			<h2>Nova Matricula</h2>
+			<p>Digite os dados da matricula</p>
+
+			<h:panelGrid columns="3" columnClasses="titleCell">
+				<h:outputLabel value="" />
+				<h:inputHidden id="idMatricula" value="#{matricula.id}" />
+				<h:message for="" errorClass="invalid" />
+
+				<h:outputLabel for="aluno" value="Aluno" />
+				<h:selectOneMenu id="aluno" value="#{matricula.aluno}" required="true" >
+				<f:selectItem itemValue="#{null}" itemLabel="-- Selecione --" />
+					<f:selectItems value="#{matriculaController.allAlunos}" 
+					               var="_aluno"
+						           itemValue="#{_aluno}" 
+						           itemLabel="#{_aluno.nome}" 
+						           itemDescription="#{_aluno.nome}"
+						           noSelectionValue="Selecione um Aluno" />
+					<f:converter converterId="entityConverter" />
+				</h:selectOneMenu>
+				<h:message for="aluno" errorClass="invalid" />
+				
+				<h:outputLabel for="curso" value="Curso" />
+				<h:selectOneMenu id="curso" value="#{matricula.curso}" required="true">
+				<f:selectItem itemValue="#{null}" itemLabel="-- Selecione --" />
+					<f:selectItems value="#{matriculaController.allCursos}" 
+					               var="_curso"
+					               itemValue="#{_curso}"  
+					               itemLabel="#{_curso.nome}" 
+					               itemDescription="#{_curso.nome}"
+					               noSelectionValue="Selecione um Aluno" />
+					<f:converter converterId="entityConverter" />
+				</h:selectOneMenu>
+				<h:message for="curso" errorClass="invalid" />
+
+				<p>
+					<h:panelGrid columns="2">
+						<h:commandButton id="register"
+							action="#{matriculaController.salvar}" value="Salvar"
+							styleClass="register" />
+						<h:messages styleClass="messages" errorClass="invalid"
+							infoClass="valid" warnClass="warning" globalOnly="true" />
+					</h:panelGrid>
+				</p>
+			</h:panelGrid>
+		</h:form>
+
+		<h:form id="formListaMatriculas">
+			<h2>Matriculas</h2>
+			<h:panelGroup rendered="#{empty matriculas}">
+				<em>Sem matriculas.</em>
+			</h:panelGroup>
+			<h:dataTable var="_matricula" value="#{matriculas}"
+				rendered="#{not empty matriculas}" styleClass="simpletablestyle"
+				id="listaMatriculas">
+				<h:column>
+					<f:facet name="header">Id</f:facet>
+                #{_matricula.id}
+                </h:column>
+				<h:column>
+					<f:facet name="header">Aluno</f:facet>
+                #{_matricula.aluno.nome}
+                </h:column>
+				<h:column>
+					<f:facet name="header">Curso</f:facet>
+                #{_matricula.curso.nome}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Situação</f:facet>
+                #{_matricula.situacao}
+                </h:column>
+				<h:column>
+					<f:facet name="header">Ações</f:facet>
+                    <h:panelGroup rendered="#{matriculaController.isRenderizarAprovarMatricula(_matricula)}"> 
+    					<h:commandLink
+                            action="#{matriculaController.aprovarMatricula(_matricula)}"
+                            value="Aprovar">
+                            <f:ajax render="formListaMatriculas" />
+                        </h:commandLink>
+                        <h:outputText value=" | " />
+                        <h:commandLink
+    						action="#{matriculaController.carregarMatricula(_matricula)}"
+    						value="Editar">
+    						<f:ajax render="reg" />
+    					</h:commandLink>
+    					<h:outputText value=" | " />
+    					<h:commandLink action="#{matriculaController.excluir(_matricula)}"
+    						value="Remover">
+    					</h:commandLink>
+                    </h:panelGroup>
+				</h:column>
+			</h:dataTable>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

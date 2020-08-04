@@ -1,0 +1,120 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    template="/WEB-INF/templates/default.xhtml">
+    <ui:define name="content">
+
+        <h1>Curso</h1>
+
+        <h:form id="reg">
+
+            <h2>Novo Curso</h2>
+            <p>Digite os dados do curso</p>
+
+            <h:panelGrid columns="3" columnClasses="titleCell">
+                <h:outputLabel value="" />
+                <h:inputHidden id="idCurso" value="#{curso.id}" />
+                <h:message for="" errorClass="invalid" />
+
+                <h:outputLabel for="nome" value="Nome:" />
+                <h:inputText id="nome" value="#{curso.nome}" />
+                <h:message for="nome" errorClass="invalid" />
+
+                <h:outputLabel for="unidade" value="Unidade" />
+                <h:selectOneMenu id="unidade" value="#{curso.unidade}"
+                    required="true">
+                    <f:selectItem itemValue="#{null}"
+                        itemLabel="-- Selecione --" />
+                    <f:selectItems
+                        value="#{cursoController.allUnidadesAtivas}"
+                        var="_unidade" itemValue="#{_unidade}"
+                        itemLabel="#{_unidade.nome}"
+                        itemDescription="#{_unidade.nome}" />
+                    <f:converter converterId="entityConverter" />
+                </h:selectOneMenu>
+                <h:message for="unidade" errorClass="invalid" />
+
+                <h:outputLabel for="inicio" value="Início:" />
+                <p:calendar id="inicio" value="#{curso.inicio}" required="true" />
+                <h:message for="inicio" errorClass="invalid" />
+
+                <h:outputLabel for="termino" value="Término:" />
+                <p:calendar id="termino" value="#{curso.termino}" required="true" />
+                <h:message for="termino" errorClass="invalid" />
+                
+                <h:outputLabel for="numeroVagas" value="Número de Vagas:" />
+                <p:inputNumber id="numeroVagas" value="#{curso.numeroVagas}" /> 
+                <h:message for="numeroVagas" errorClass="invalid" />
+
+                <p>
+                    <h:panelGrid columns="2">
+                        <h:commandButton id="register"
+                            action="#{cursoController.salvar}"
+                            value="Salvar" styleClass="register" />
+                        <h:messages styleClass="messages"
+                            errorClass="invalid" infoClass="valid"
+                            warnClass="warning" globalOnly="true" />
+                    </h:panelGrid>
+                </p>
+            </h:panelGrid>
+        </h:form>
+
+        <h:form>
+            <h2>Cursos</h2>
+            <h:panelGroup rendered="#{empty cursos}">
+                <em>Sem cursos.</em>
+            </h:panelGroup>
+            <h:dataTable var="_curso" value="#{cursos}"
+                rendered="#{not empty cursos}"
+                styleClass="simpletablestyle" id="listaMatriculas">
+                <h:column>
+                    <f:facet name="header">Id</f:facet>
+                    #{_curso.id}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Nome</f:facet>
+                    #{_curso.nome}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Unidade</f:facet>
+                    #{_curso.unidade.nome}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Início</f:facet>
+                    <h:outputText value="#{_curso.inicio}">
+                        <f:convertDateTime type="date"
+                            pattern="dd-MM-yyyy" />
+                    </h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Término</f:facet>
+                    <h:outputText value="#{_curso.termino}">
+                        <f:convertDateTime type="date"
+                            pattern="dd-MM-yyyy" />
+                    </h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Número de Vagas</f:facet>
+                    <h:outputText value="#{_curso.numeroVagas}" />
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Ações</f:facet>
+                    <h:commandLink
+                        action="#{cursoController.carregarCurso(_curso)}"
+                        value="Editar">
+                        <f:ajax render="reg" />
+                    </h:commandLink>
+                    <h:outputText value=" | " />
+                    <h:commandLink
+                        action="#{cursoController.excluir(_curso)}"
+                        value="Remover">
+                    </h:commandLink>
+                </h:column>
+            </h:dataTable>
+        </h:form>
+
+    </ui:define>
+</ui:composition>
