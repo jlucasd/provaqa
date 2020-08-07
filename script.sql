@@ -23,6 +23,8 @@ WITH (
 ALTER TABLE public.unidade
   OWNER TO postgres;
 
+alter table unidade add ativa boolean default true;
+
 CREATE TABLE public.curso
 (
   id bigint NOT NULL,
@@ -76,7 +78,6 @@ WITH (
 );
 ALTER TABLE public.matricula
   OWNER TO postgres;
-
 
 INSERT INTO unidade (id, nome) VALUES (1, 'SENAI Tubarão');
 INSERT INTO unidade (id, nome) VALUES (2, 'SENAI Capivari de Baixo');
