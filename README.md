@@ -23,7 +23,11 @@ Windows: `type script.sql | docker exec -i pg_data psql -U postgres -d provaqa`
 
 - Dentro da pasta Docker execute o seguinte comando.
 
+Caso Linux e MAC:
 `./build.sh`
+
+Caso Windows:
+`build.bat`
 
 - Feito isso a aplicação pode ser acessada no endereço `http://localhost:8080/prova-java`
 
@@ -37,11 +41,5 @@ Obs.: Caso o arquivo build.sh não possua permissão de execução você poderá
 
 1)  Rodar o comando `docker start pg_data` para subir o container do banco de dados; 
 2)  Na sequência, dentro da pasta Docker execute o seguinte comando.
-
-Caso Linux e MAC:
-`./build.sh`
-
-Caso Windows:
-`build.bat`
 
 Isto irá executar todos os demais passos necessários
