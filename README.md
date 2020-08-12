@@ -38,6 +38,10 @@ Obs.: Caso o arquivo build.sh não possua permissão de execução você poderá
 1)  Rodar o comando `docker start pg_data` para subir o container do banco de dados; 
 2)  Na sequência, dentro da pasta Docker execute o seguinte comando.
 
+Caso Linux e MAC:
 `./build.sh`
+
+Caso Windows:
+`build.bat`
 
 Isto irá executar todos os demais passos necessários
